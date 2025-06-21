@@ -11,7 +11,8 @@ public class Tile : MonoBehaviour
     public Material missMaterial;
     public Material highlightMaterial;
 
-    public EnemyVessel LinkedVessel { get; set; }
+    //public EnemyVessel LinkedVessel { get; set; }
+    public Ship LinkedVessel { get; set; }
 
     private Renderer _renderer;
     private Material _defaultMaterial;

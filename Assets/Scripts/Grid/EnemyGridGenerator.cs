@@ -7,6 +7,8 @@ public class EnemyGridGenerator : MonoBehaviour
     public float spacing = 1.1f;
 
     public Material enemyDefaultMaterial;
+    private Tile[,] grid = new Tile[10, 10]; 
+    public Tile[,] Grid => grid;           
 
     void Start()
     {
@@ -28,6 +30,8 @@ public class EnemyGridGenerator : MonoBehaviour
                 Tile tile = tileObj.GetComponent<Tile>();
                 tile.Init(new Vector2Int(x, y), isEnemy: true);
                 tile.SetMaterial(enemyDefaultMaterial);
+
+                grid[x, y] = tile;
             }
         }
     }

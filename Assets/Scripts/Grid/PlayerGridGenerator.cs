@@ -1,88 +1,4 @@
-﻿/*using UnityEngine;
-
-public class PlayerGridGenerator : MonoBehaviour
-{
-    public GameObject tilePrefab;
-    public int gridSize = 10;
-    public float spacing = 1.1f;
-    public Material playerDefaultMaterial;
-    public Material occupiedMaterial;
-
-    public ShipPlacementManager playerShipPlacer;
-
-    void Start()
-    {
-        GenerateGrid();
-        playerShipPlacer.GenerateShips(); // 💡 Генеруємо кораблі одразу після побудови сітки
-    }
-
-    void GenerateGrid()
-    {
-        for (int x = 0; x < gridSize; x++)
-            for (int y = 0; y < gridSize; y++)
-            {
-                Vector3 pos = transform.position + new Vector3(x * spacing, -y * spacing, 0);
-                GameObject tileObj = Instantiate(tilePrefab, pos, Quaternion.identity, transform);
-                Tile tile = tileObj.GetComponent<Tile>();
-                tile.Init(new Vector2Int(x, y), false);
-                tile.SetMaterial(playerDefaultMaterial);
-            }
-    }
-
-    void PlaceShips()
-    {
-        int[,] shipPattern = new int[10, 10];
-
-        PlaceShip(shipPattern, 4, 1);
-        PlaceShip(shipPattern, 3, 2);
-        PlaceShip(shipPattern, 2, 3);
-        PlaceShip(shipPattern, 1, 4);
-
-        foreach (Tile tile in GetComponentsInChildren<Tile>())
-        {
-            Vector2Int pos = tile.GridPosition;
-            if (shipPattern[pos.x, pos.y] == 1)
-            {
-                tile.IsOccupied = true;
-                tile.SetMaterial(occupiedMaterial);
-            }
-        }
-    }
-
-    void PlaceShip(int[,] map, int length, int count)
-    {
-        int placed = 0;
-        while (placed < count)
-        {
-            bool horizontal = Random.value > 0.5f;
-            int x = Random.Range(0, horizontal ? 10 - length + 1 : 10);
-            int y = Random.Range(0, horizontal ? 10 : 10 - length + 1);
-
-            bool canPlace = true;
-            for (int i = 0; i < length; i++)
-            {
-                int cx = x + (horizontal ? i : 0);
-                int cy = y + (horizontal ? 0 : i);
-                if (map[cx, cy] == 1)
-                {
-                    canPlace = false;
-                    break;
-                }
-            }
-
-            if (!canPlace) continue;
-
-            for (int i = 0; i < length; i++)
-            {
-                int cx = x + (horizontal ? i : 0);
-                int cy = y + (horizontal ? 0 : i);
-                map[cx, cy] = 1;
-            }
-            placed++;
-        }
-    }
-}*/
-
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerGridGenerator : MonoBehaviour
@@ -95,7 +11,9 @@ public class PlayerGridGenerator : MonoBehaviour
 
     private Tile[,] grid = new Tile[10, 10];
     private bool[,] forbidden = new bool[10, 10];
+    public List<Ship> Ships { get; private set; } = new List<Ship>();
 
+    public Tile[,] Grid => grid;
     void Start()
     {
         GenerateGrid();
@@ -110,9 +28,11 @@ public class PlayerGridGenerator : MonoBehaviour
             {
                 Vector3 pos = transform.position + new Vector3(x * spacing, -y * spacing, 0);
                 GameObject tileObj = Instantiate(tilePrefab, pos, Quaternion.identity, transform);
+
                 Tile tile = tileObj.GetComponent<Tile>();
                 tile.Init(new Vector2Int(x, y), false);
                 tile.SetMaterial(playerDefaultMaterial);
+
                 grid[x, y] = tile;
             }
         }
@@ -129,9 +49,13 @@ public class PlayerGridGenerator : MonoBehaviour
                 {
                     grid[x, y].IsOccupied = false;
                     grid[x, y].SetMaterial(playerDefaultMaterial);
+                    grid[x, y].LinkedVessel = null;
+                    grid[x, y].IsHit = false;
                 }
             }
         }
+
+        Ships.Clear();
     }
 
     void PlaceAllShips()
@@ -149,12 +73,12 @@ public class PlayerGridGenerator : MonoBehaviour
 
             if (placed4 == 1 && placed3 == 2 && placed2 == 3 && placed1 == 4)
             {
-                Debug.Log($"✅ Кораблі розміщено успішно з {attempt + 1}-ї спроби");
+                Debug.Log($"✅ Кораблі гравця розміщено успішно з {attempt + 1}-ї спроби");
                 return;
             }
         }
 
-        Debug.LogError("❌ Не вдалося розмістити всі кораблі навіть після кількох спроб.");
+        Debug.LogError("❌ Не вдалося розмістити всі кораблі гравця навіть після кількох спроб.");
     }
 
     int PlaceShip(int length, int count)
@@ -170,7 +94,6 @@ public class PlayerGridGenerator : MonoBehaviour
 
             bool canPlace = true;
 
-            // Перевіряємо тільки клітинки під кораблем
             for (int i = 0; i < length; i++)
             {
                 int cx = x + (horizontal ? i : 0);
@@ -185,16 +108,20 @@ public class PlayerGridGenerator : MonoBehaviour
 
             if (!canPlace) continue;
 
-            // Розміщення корабля
+            Ship ship = new Ship();
+
             for (int i = 0; i < length; i++)
             {
                 int cx = x + (horizontal ? i : 0);
                 int cy = y + (horizontal ? 0 : i);
 
-                grid[cx, cy].IsOccupied = true;
-                grid[cx, cy].SetMaterial(occupiedMaterial);
+                Tile tile = grid[cx, cy];
+                tile.IsOccupied = true;
+                tile.LinkedVessel = ship;
+                tile.SetMaterial(occupiedMaterial);
 
-                // Встановлюємо зони заборони навколо кожної частини корабля
+                ship.Tiles.Add(tile);
+
                 for (int dx = -1; dx <= 1; dx++)
                 {
                     for (int dy = -1; dy <= 1; dy++)
@@ -209,10 +136,10 @@ public class PlayerGridGenerator : MonoBehaviour
                 }
             }
 
+            Ships.Add(ship);
             placed++;
         }
 
         return placed;
     }
-
 }

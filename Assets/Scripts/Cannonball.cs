@@ -25,11 +25,17 @@ public class Cannonball : MonoBehaviour
             Hit();
         }
     }
-
     void Hit()
     {
         isMoving = false;
-        targetTile?.OnHit();
+
+        if (targetTile != null)
+        {
+            targetTile.OnHit();
+            GameManager.Instance.OnCannonballHitCompleted(targetTile);
+        }
+
         Destroy(gameObject, 0.1f);
     }
+
 }

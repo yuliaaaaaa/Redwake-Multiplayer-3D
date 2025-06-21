@@ -8,8 +8,8 @@ public class ShipPlacementManager : MonoBehaviour
     private Tile[,] grid = new Tile[10, 10];
     private bool[,] forbidden = new bool[10, 10];
 
-    private List<EnemyVessel> enemyShips = new List<EnemyVessel>();
-
+    private List<Ship> enemyShips = new List<Ship>();
+    public List<Ship> Ships => enemyShips;
     private class ShipDefinition
     {
         public int length;
@@ -95,7 +95,7 @@ public class ShipPlacementManager : MonoBehaviour
 
             if (candidatePositions.Count == length)
             {
-                EnemyVessel vessel = new EnemyVessel();
+                Ship vessel = new Ship();
 
                 foreach (var pos in candidatePositions)
                 {

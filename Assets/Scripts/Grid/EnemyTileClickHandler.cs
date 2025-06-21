@@ -14,11 +14,19 @@ public class EnemyTileClickHandler : MonoBehaviour
             gun = obj.GetComponent<GunController>();
     }
 
-    void OnMouseDown()
+    /*void OnMouseDown()
     {
         if (gun != null && tile != null && !tile.IsHit && tile.IsEnemyField)
         {
             gun.FireAt(tile.transform.position, tile);
         }
+    }*/
+
+    void OnMouseDown()
+    {
+        if (!tile.IsEnemyField || tile.IsHit) return;
+
+        GameManager.Instance.OnPlayerClick(tile);
     }
+
 }

@@ -1,35 +1,42 @@
-/*using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
-public class Ship : MonoBehaviour
+public class Ship
 {
-    public int length = 3;
-    public bool isVertical = false;
-    private Tile[] occupiedTiles;
+    public List<Tile> Tiles = new List<Tile>();
 
-    public void PlaceOnTiles(Tile startTile, Tile[,] grid)
+    /// <summary>
+    /// Перевіряє, чи всі клітинки корабля вже влучені
+    /// </summary>
+    public bool IsSunk()
     {
-        int x = startTile.GridPosition.x;
-        int y = startTile.GridPosition.y;
-
-        occupiedTiles = new Tile[length];
-
-        for (int i = 0; i < length; i++)
+        foreach (var tile in Tiles)
         {
-            int dx = isVertical ? 0 : i;
-            int dy = isVertical ? i : 0;
-
-            Tile tile = grid[x + dx, y + dy];
-            tile.IsOccupied = true;
-            occupiedTiles[i] = tile;
+            if (!tile.IsHit)
+                return false;
         }
-
-        Vector3 center = Vector3.zero;
-        foreach (Tile tile in occupiedTiles)
-            center += tile.transform.position;
-        center /= length;
-
-        transform.position = center + new Vector3(0, 0.5f, 0);
-
-        transform.rotation = isVertical ? Quaternion.Euler(0, 90, 0) : Quaternion.identity;
+        return true;
     }
-}*/
+
+    /// <summary>
+    /// Виділяє всі клітинки корабля (наприклад, при попаданні)
+    /// </summary>
+    public void HighlightAll()
+    {
+        foreach (var tile in Tiles)
+        {
+            tile.Highlight();
+        }
+    }
+
+    /// <summary>
+    /// Помічає всі клітинки як знищені (можна змінити матеріал)
+    /// </summary>
+    public void MarkAsDestroyed()
+    {
+        foreach (var tile in Tiles)
+        {
+            tile.SetMaterial(tile.hitMaterial); // 🔁 можна змінити на destroyedMaterial
+        }
+    }
+}
