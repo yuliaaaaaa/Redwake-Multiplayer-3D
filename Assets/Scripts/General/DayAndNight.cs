@@ -10,7 +10,6 @@ public class DayAndNight : MonoBehaviour
     private float xposureShader = 1.1f;//0.6550002f;
     public float rotationSkySpeed = 10;
     public float rotateXPosition;
-    private int coppyAndChack;
 
     private void Start()
     {
@@ -34,35 +33,6 @@ public class DayAndNight : MonoBehaviour
         {
             rotationShader = 0;
         }
-
-        /*rotateXPosition = transform.rotation.eulerAngles.x;
-        previousRotation = Mathf.RoundToInt(rotateXPosition);
-        Debug.Log(rotateXPosition);
-        Debug.Log(previousRotation);
-
-        if (previousRotation - coppyAndChack == 1)
-        {
-            if (rotateXPosition < 90 && rotateXPosition <= 0 || rotateXPosition > 270 && rotateXPosition <= 360)
-            {
-                xposureShader += 0.00727778f;
-            }
-            else if (rotateXPosition > 90 && rotateXPosition < 270)
-            {
-                xposureShader -= 0.00727778f;
-            }
-
-            if (previousRotation >= 90)
-            {
-                xposureShader = 1.1f;
-            }
-            if (previousRotation >= 270)
-            {
-                xposureShader = 0.21f;
-            }
-
-        }
-
-        coppyAndChack = previousRotation;*/
         skyBox.SetFloat("_Rotation", rotationShader);
         skyBox.SetFloat("_Exposure", xposureShader);
     }

@@ -14,12 +14,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GunController playerGun;
     [SerializeField] private GunController enemyGun;
 
-    [SerializeField] private GameOverManager gameOverManager; 
+    [SerializeField] private GameOverManager gameOverManager;
+
     private List<Ship> playerShips;
     private List<Ship> enemyShips;
 
     private bool isPlayerTurn = true;
-
+    private bool gameEnded = false;
 
     void Awake()
     {
@@ -27,76 +28,76 @@ public class GameManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    // Викликається, коли гравець клікає по клітинці ворога
-    public void OnPlayerClick(Tile tile)
-    {
-        if (!isPlayerTurn || tile.IsHit) return;
-
-        playerGun.FireAt(tile.transform.position, tile);
-        isPlayerTurn = false;
-    }
     public void SetShips(List<Ship> player, List<Ship> enemy)
     {
         playerShips = player;
         enemyShips = enemy;
     }
+
+    public void OnPlayerClick(Tile tile)
+    {
+        if (!isPlayerTurn || tile.IsHit || gameEnded) return;
+
+        playerGun.FireAt(tile.transform.position, tile);
+        isPlayerTurn = false;
+    }
+
     public void OnCannonballHitCompleted(Tile tile)
     {
-        // 🏁 Перевірка завершення гри
+        // Перевірка завершення гри
         if (tile.IsEnemyField && AllShipsSunk(enemyShips))
         {
-            Debug.Log("🎉 Гравець переміг!");
-            gameOverManager.ShowGameOver("🎉 Гравець переміг!");
+            EndGame(true);
             return;
         }
         else if (!tile.IsEnemyField && AllShipsSunk(playerShips))
         {
-            Debug.Log("💀 Ворог переміг!");
             EndGame(false);
             return;
         }
 
+        // Якщо влучив — той же гравець ходить знову
         if (tile.IsOccupied)
         {
             if (tile.IsEnemyField)
-            {
-                Debug.Log("🎯 Гравець влучив — ще один хід!");
-            }
+                Debug.Log("Гравець влучив — ще один хід!");
             else
-            {
-                Debug.Log("🎯 Ворог влучив — ще один хід!");
-            }
+                Debug.Log("Ворог влучив — ще один хід!");
 
             Invoke(tile.IsEnemyField ? nameof(PlayerTurn) : nameof(EnemyTurn), 0.8f);
             return;
         }
 
+        // Промах — передаємо хід іншому
         if (tile.IsEnemyField)
         {
-            Debug.Log("🌊 Гравець промахнувся — хід ворога");
-            Invoke(nameof(EnemyTurn), 1f);
+            Debug.Log("Гравець промахнувся — хід ворога");
             isPlayerTurn = false;
+            Invoke(nameof(EnemyTurn), 1f);
         }
         else
         {
-            Debug.Log("🌊 Ворог промахнувся — хід гравця");
+            Debug.Log("Ворог промахнувся — хід гравця");
             isPlayerTurn = true;
         }
     }
+
+    void PlayerTurn()
+    {
+        if (gameEnded) return;
+        isPlayerTurn = true;
+    }
+
     void EnemyTurn()
     {
+        if (gameEnded) return;
+
         Vector2Int target = GetRandomUntouchedTileFrom(playerGrid.Grid);
         Tile tile = playerGrid.Grid[target.x, target.y];
 
         enemyGun.FireAt(tile.transform.position, tile);
     }
 
-    void PlayerTurn()
-    {
-        isPlayerTurn = true;
-    }
-
-    // Знаходить випадкову невражену клітинку
     Vector2Int GetRandomUntouchedTileFrom(Tile[,] grid)
     {
         for (int i = 0; i < 1000; i++)
@@ -107,30 +108,46 @@ public class GameManager : MonoBehaviour
                 return new Vector2Int(x, y);
         }
 
-        Debug.LogWarning("⚠️ Всі клітинки вже вражені");
+        Debug.LogWarning("All cells are already affected");
         return Vector2Int.zero;
     }
 
     bool AllShipsSunk(List<Ship> ships)
     {
+        if (ships == null || ships.Count == 0)
+        {
+            Debug.LogWarning("No ships to check");
+            return false;
+        }
+
         foreach (var ship in ships)
         {
             if (!ship.IsSunk())
             {
-                Debug.Log($"🚢 Ще живий корабель із {ship.Tiles.Count} клітинками");
+                Debug.Log($"Still alive ship with {ship.Tiles.Count} cells");
                 return false;
             }
         }
 
-        Debug.Log("✅ Всі кораблі знищено!");
+        Debug.Log("All ships destroyed");
         return true;
     }
+
     void EndGame(bool playerWon)
     {
-        Debug.Log(playerWon ? "🎉 Гравець переміг!" : "💀 Ворог переміг!");
+        if (gameEnded) return;
+        gameEnded = true;
+
+        Debug.Log(playerWon ? "You won." : "You lose.");
         Time.timeScale = 0f;
 
-        // TODO: показати UI (перемога/поразка), кнопки, тощо
+        if (gameOverManager != null)
+        {
+            gameOverManager.ShowGameOver(playerWon ? "You won." : "You lose.");
+        }
+        else
+        {
+            Debug.LogWarning("GameOverManager не призначений");
+        }
     }
-
 }

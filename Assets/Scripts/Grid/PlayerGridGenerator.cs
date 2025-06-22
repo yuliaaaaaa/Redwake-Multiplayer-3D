@@ -18,6 +18,16 @@ public class PlayerGridGenerator : MonoBehaviour
     {
         GenerateGrid();
         PlaceAllShips();
+
+        ShipPlacementManager shipPlacement = FindObjectOfType<ShipPlacementManager>();
+        if (shipPlacement != null && GameManager.Instance != null)
+        {
+            GameManager.Instance.SetShips(Ships, shipPlacement.Ships);
+        }
+        else
+        {
+            Debug.LogWarning("⚠️ Не знайдено ShipPlacementManager або GameManager.Instance — не передано кораблі.");
+        }
     }
 
     void GenerateGrid()
