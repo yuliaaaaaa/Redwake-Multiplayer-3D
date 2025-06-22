@@ -14,7 +14,7 @@ public class PlayerGridGenerator : MonoBehaviour
     public List<Ship> Ships { get; private set; } = new List<Ship>();
 
     public Tile[,] Grid => grid;
-    void Start()
+    public void GenerateShips()
     {
         GenerateGrid();
         PlaceAllShips();

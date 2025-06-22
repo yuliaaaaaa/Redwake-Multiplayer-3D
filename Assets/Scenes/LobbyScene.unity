@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 133347283e115d147a5fcce7f47a538f, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -130,6 +130,7 @@ GameObject:
   - component: {fileID: 503471117}
   - component: {fileID: 503471116}
   - component: {fileID: 503471118}
+  - component: {fileID: 503471119}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -240,6 +241,22 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+--- !u!114 &503471119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 503471115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0e9a6fc1420b6041a7dbaa77734de57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  degPerSec: 1
+  skyBox: {fileID: 2100000, guid: 50bf15468c19e0e40b5bf26662770a34, type: 2}
+  rotationSkySpeed: 0.5
+  rotateXPosition: 0
 --- !u!1 &525550365
 GameObject:
   m_ObjectHideFlags: 0
@@ -2242,7 +2259,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 0.18431371, g: 0.72156864, b: 0.40762442, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2381,9 +2398,9 @@ RectTransform:
   m_Father: {fileID: 1954652423}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 90, y: -167}
-  m_SizeDelta: {x: 160, y: -352}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 90, y: 24}
+  m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2019486913
 MonoBehaviour:

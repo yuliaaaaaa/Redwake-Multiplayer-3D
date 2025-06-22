@@ -10,15 +10,25 @@ public class EnemyGridGenerator : MonoBehaviour
     private Tile[,] grid = new Tile[10, 10]; 
     public Tile[,] Grid => grid;           
 
-    void Start()
+   /* void Start()
     {
         GenerateGrid();
 
         // 🟢 Генеруємо кораблі ПІСЛЯ створення всіх тайлів
         FindObjectOfType<ShipPlacementManager>()?.GenerateShips();
+    }*/
+    void Start()
+    {
+        if (Photon.Pun.PhotonNetwork.IsMasterClient)
+        {
+            // Генерує ворога тільки хост (тобто поле супротивника)
+            return;
+        }
+
+        GenerateGrid();
     }
 
-    void GenerateGrid()
+    public void GenerateGrid()
     {
         for (int x = 0; x < gridSize; x++)
         {
