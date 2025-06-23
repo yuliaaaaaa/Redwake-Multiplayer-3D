@@ -7,10 +7,10 @@ public class Cannonball : MonoBehaviour
     public float speed = 5f;
     private bool isMoving = false;
 
-    public void SetTarget(Vector3 target, Tile tile)
+    public void FireTo(Vector3 targetPosition, Tile targetTile)
     {
-        targetPosition = target;
-        targetTile = tile;
+        this.targetPosition = targetPosition;
+        this.targetTile = targetTile;
         isMoving = true;
     }
 
@@ -25,6 +25,7 @@ public class Cannonball : MonoBehaviour
             Hit();
         }
     }
+
     void Hit()
     {
         isMoving = false;
@@ -37,5 +38,4 @@ public class Cannonball : MonoBehaviour
 
         Destroy(gameObject, 0.1f);
     }
-
 }

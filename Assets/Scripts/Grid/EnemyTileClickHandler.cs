@@ -1,23 +1,51 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(Tile))]
 public class EnemyTileClickHandler : MonoBehaviour
 {
-    private GunController gun;
+    private ShotSynchronizer shotSynchronizer;
     private Tile tile;
 
-    void Awake()
+    public void SetShotSynchronizer(ShotSynchronizer synchronizer)
+    {
+        if (synchronizer == null)
+        {
+            Debug.LogError("❌ [ClickHandler] ShotSynchronizer не передано!");
+            return;
+        }
+
+        shotSynchronizer = synchronizer;
+    }
+
+    private void Awake()
     {
         tile = GetComponent<Tile>();
-        var obj = GameObject.FindGameObjectWithTag("PlayerCannon");
-        if (obj != null)
-            gun = obj.GetComponent<GunController>();
+        if (tile == null)
+        {
+            Debug.LogError("❌ [ClickHandler] Не знайдено Tile на обʼєкті!");
+        }
     }
-    void OnMouseDown()
+
+    private void OnMouseDown()
     {
-        if (!tile.IsEnemyField || tile.IsHit) return;
+        if (tile == null || shotSynchronizer == null) return;
 
-        GameManager.Instance.OnPlayerClick(tile);
+        if (!tile.IsEnemyField)
+        {
+            Debug.Log($"⛔ Клік по своєму полі: {tile.GridPosition}");
+            return;
+        }
+
+        if (!GameManager.Instance.IsPlayerTurn())
+        {
+            Debug.Log("⏳ Зачекай свого ходу!");
+            return;
+        }
+
+        if (tile.IsHit)
+        {
+            Debug.Log("🔁 Вже стріляли по цій клітинці");
+            return;
+        }
+        shotSynchronizer.SendFireAt(tile.GridPosition);
     }
-
 }

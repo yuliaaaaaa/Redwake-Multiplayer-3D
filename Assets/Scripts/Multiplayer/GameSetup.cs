@@ -5,6 +5,7 @@ public class GameSetup : MonoBehaviourPun
 {
     public PlayerGridGenerator playerGridGenerator;
     public EnemyGridGenerator enemyGridGenerator;
+    public ShotSynchronizer shotSynchronizer;
 
     public Camera playerCamera;
     public Camera enemyCamera;
@@ -19,31 +20,17 @@ public class GameSetup : MonoBehaviourPun
 
         Debug.Log(photonView.IsMine ? "🎮 Я — гравець (host)" : "🤖 Я — другий гравець");
 
-        // 🎯 Усі гравці мають мати доступ до свого поля та до сітки ворога
         playerGridGenerator.gameObject.SetActive(true);
         enemyGridGenerator.gameObject.SetActive(true);
 
-        if (photonView.IsMine)
-        {
-            // 👤 Для себе — генеруємо кораблі
-            playerGridGenerator.GenerateShips();
+        // 1. Завжди генеруємо своє поле з кораблями
+        playerGridGenerator.GenerateShips();
 
-            // 🔲 Поле ворога — порожня сітка для кліків
-            enemyGridGenerator.GenerateGrid();
+        // 2. Завжди генеруємо поле ворога, передаючи ShotSynchronizer
+        enemyGridGenerator.GenerateGrid(shotSynchronizer);
 
-            playerCamera.gameObject.SetActive(true);
-            enemyCamera.gameObject.SetActive(false);
-        }
-        else
-        {
-            // 👤 Для другого гравця — своє поле з кораблями
-            playerGridGenerator.GenerateShips();
-
-            // 🔲 Поле хоста — порожня сітка
-            enemyGridGenerator.GenerateGrid();
-
-            playerCamera.gameObject.SetActive(false);
-            enemyCamera.gameObject.SetActive(true);
-        }
+        // 3. Камери
+        playerCamera.gameObject.SetActive(photonView.IsMine);
+        enemyCamera.gameObject.SetActive(!photonView.IsMine);
     }
 }

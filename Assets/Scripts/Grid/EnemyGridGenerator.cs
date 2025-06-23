@@ -7,29 +7,17 @@ public class EnemyGridGenerator : MonoBehaviour
     public float spacing = 1.1f;
 
     public Material enemyDefaultMaterial;
-    private Tile[,] grid = new Tile[10, 10]; 
-    public Tile[,] Grid => grid;           
 
-   /* void Start()
-    {
-        GenerateGrid();
+    private Tile[,] grid = new Tile[10, 10];
+    public Tile[,] Grid => grid;
 
-        // 🟢 Генеруємо кораблі ПІСЛЯ створення всіх тайлів
-        FindObjectOfType<ShipPlacementManager>()?.GenerateShips();
-    }*/
-    void Start()
+    public void GenerateGrid(ShotSynchronizer synchronizer)
     {
-        if (Photon.Pun.PhotonNetwork.IsMasterClient)
+        if (synchronizer == null)
         {
-            // Генерує ворога тільки хост (тобто поле супротивника)
-            return;
+            Debug.LogError("❌ Не передано ShotSynchronizer у GenerateGrid!");
         }
 
-        GenerateGrid();
-    }
-
-    public void GenerateGrid()
-    {
         for (int x = 0; x < gridSize; x++)
         {
             for (int y = 0; y < gridSize; y++)
@@ -42,7 +30,18 @@ public class EnemyGridGenerator : MonoBehaviour
                 tile.SetMaterial(enemyDefaultMaterial);
 
                 grid[x, y] = tile;
+
+                EnemyTileClickHandler clickHandler = tileObj.GetComponent<EnemyTileClickHandler>();
+                if (clickHandler != null)
+                {
+                    clickHandler.SetShotSynchronizer(synchronizer);
+                }
+                else
+                {
+                    Debug.LogWarning($"📛 На Tile ({x},{y}) немає EnemyTileClickHandler");
+                }
             }
         }
     }
 }
+

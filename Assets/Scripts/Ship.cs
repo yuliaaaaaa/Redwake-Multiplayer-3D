@@ -1,13 +1,10 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class Ship
+public class Ship : MonoBehaviour 
 {
     public List<Tile> Tiles = new List<Tile>();
-
-    /// <summary>
     /// Перевіряє, чи всі клітинки корабля вже влучені
-    /// </summary>
     public bool IsSunk()
     {
         foreach (var tile in Tiles)
@@ -17,10 +14,7 @@ public class Ship
         }
         return true;
     }
-
-    /// <summary>
     /// Виділяє всі клітинки корабля (наприклад, при попаданні)
-    /// </summary>
     public void HighlightAll()
     {
         foreach (var tile in Tiles)
@@ -28,10 +22,7 @@ public class Ship
             tile.Highlight();
         }
     }
-
-    /// <summary>
     /// Помічає всі клітинки як знищені (можна змінити матеріал)
-    /// </summary>
     public void MarkAsDestroyed()
     {
         foreach (var tile in Tiles)

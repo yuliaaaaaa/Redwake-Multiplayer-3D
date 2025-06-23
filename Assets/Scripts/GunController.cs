@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GunController : MonoBehaviour
 {
@@ -9,6 +9,6 @@ public class GunController : MonoBehaviour
     {
         GameObject cannonballGO = Instantiate(cannonballPrefab, muzzlePoint.position, Quaternion.identity);
         Cannonball cannonball = cannonballGO.GetComponent<Cannonball>();
-        cannonball.SetTarget(target + Vector3.up * 0.5f, tile);
+        cannonball.FireTo(target + Vector3.up * 0.5f, tile); 
     }
 }
