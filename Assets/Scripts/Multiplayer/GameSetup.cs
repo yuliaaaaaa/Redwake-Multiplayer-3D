@@ -14,11 +14,11 @@ public class GameSetup : MonoBehaviourPun
     {
         if (playerCamera == null || enemyCamera == null)
         {
-            Debug.LogError("❌ Камери не призначено в інспекторі");
+            Debug.LogError("Камери не призначено в інспекторі");
             return;
         }
 
-        Debug.Log(photonView.IsMine ? "🎮 Я — гравець (host)" : "🤖 Я — другий гравець");
+        Debug.Log(photonView.IsMine ? "Я — гравець (host)" : "Я — другий гравець");
 
         playerGridGenerator.gameObject.SetActive(true);
         enemyGridGenerator.gameObject.SetActive(true);

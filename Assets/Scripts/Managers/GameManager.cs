@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        // 🎯 ВЛУЧЕННЯ
+        // ВЛУЧЕННЯ
         if (tile.IsOccupied)
         {
             Debug.Log(tile.IsEnemyField ? "Гравець влучив — ще один хід!" : "Ворог влучив — ще один хід!");
@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        // 💨 ПРОМАХ
+        // ПРОМАХ
         if (tile.IsEnemyField)
         {
             Debug.Log("Гравець промахнувся — хід ворога");

@@ -27,7 +27,7 @@ public class Ship : MonoBehaviour
     {
         foreach (var tile in Tiles)
         {
-            tile.SetMaterial(tile.hitMaterial); // 🔁 можна змінити на destroyedMaterial
+            tile.SetMaterial(tile.hitMaterial); 
         }
     }
 }

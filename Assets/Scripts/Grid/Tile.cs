@@ -47,13 +47,13 @@ public class Tile : MonoBehaviour
 
         if (IsOccupied)
         {
-            Debug.Log($"💥 ВЛУЧЕННЯ: Корабель супротивника на клітинці {GridPosition.x}, {GridPosition.y} уражено!");
+            Debug.Log($"ВЛУЧЕННЯ: Корабель супротивника на клітинці {GridPosition.x}, {GridPosition.y} уражено!");
 
             if (LinkedVessel != null)
             {
                 if (LinkedVessel.IsSunk())
                 {
-                    Debug.Log("☠️ ВЕСЬ ВОРОЖИЙ СЕКТОР ЗНИЩЕНО");
+                    Debug.Log("ВЕСЬ ВОРОЖИЙ СЕКТОР ЗНИЩЕНО");
                     LinkedVessel.MarkAsDestroyed();
                 }
                 else
@@ -64,7 +64,7 @@ public class Tile : MonoBehaviour
         }
         else
         {
-            Debug.Log($"🌊 ПРОМАХ: На клітинці {GridPosition.x}, {GridPosition.y} немає корабля.");
+            Debug.Log($"ПРОМАХ: На клітинці {GridPosition.x}, {GridPosition.y} немає корабля.");
             _renderer.sharedMaterial = missMaterial;
         }
     }

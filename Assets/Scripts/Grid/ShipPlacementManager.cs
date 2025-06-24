@@ -41,11 +41,11 @@ public class ShipPlacementManager : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning($"❗ Tile має некоректні координати: {pos}");
+                Debug.LogWarning($"Tile має некоректні координати: {pos}");
             }
         }
 
-        Debug.Log($"📦 Записано {count} Tile-об'єктів у сітку");
+        Debug.Log($"Записано {count} Tile-об'єктів у сітку");
     }
 
     void PlaceAllShips()
@@ -113,7 +113,7 @@ public class ShipPlacementManager : MonoBehaviour
             attempts++;
         }
 
-        Debug.LogWarning($"🚫 Не вдалося розмістити корабель довжиною {length}");
+        Debug.LogWarning($"Не вдалося розмістити корабель довжиною {length}");
     }
 
     bool IsValidPlacement(int x, int y)

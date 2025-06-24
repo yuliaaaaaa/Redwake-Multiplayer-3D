@@ -37,19 +37,19 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
-        Debug.Log("✅ Підключено до Photon Master Server");
+        Debug.Log("Підключено до Photon Master Server");
         PhotonNetwork.JoinLobby();
     }
 
     public override void OnJoinedLobby()
     {
-        Debug.Log("📥 Приєдналися до лобі. Створюємо або підключаємось до кімнати...");
+        Debug.Log("Приєдналися до лобі. Створюємо або підключаємось до кімнати...");
         PhotonNetwork.JoinOrCreateRoom("Room_1", new RoomOptions { MaxPlayers = 2 }, TypedLobby.Default);
     }
 
     public override void OnJoinedRoom()
     {
-        Debug.Log("🚪 Увійшли в кімнату!");
+        Debug.Log("Увійшли в кімнату!");
         UpdatePlayerList();
 
         startGameButton.gameObject.SetActive(PhotonNetwork.IsMasterClient);

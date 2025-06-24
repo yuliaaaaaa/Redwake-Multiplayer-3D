@@ -26,7 +26,7 @@ public class PlayerGridGenerator : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("⚠️ Не знайдено ShipPlacementManager або GameManager.Instance — не передано кораблі.");
+            Debug.LogWarning("Не знайдено ShipPlacementManager або GameManager.Instance — не передано кораблі.");
         }
     }
 
@@ -47,7 +47,6 @@ public class PlayerGridGenerator : MonoBehaviour
             }
         }
     }
-
     void ResetField()
     {
         for (int x = 0; x < gridSize; x++)
@@ -67,7 +66,6 @@ public class PlayerGridGenerator : MonoBehaviour
 
         Ships.Clear();
     }
-
     void PlaceAllShips()
     {
         int maxRetries = 20;
@@ -83,14 +81,13 @@ public class PlayerGridGenerator : MonoBehaviour
 
             if (placed4 == 1 && placed3 == 2 && placed2 == 3 && placed1 == 4)
             {
-                Debug.Log($"✅ Кораблі гравця розміщено успішно з {attempt + 1}-ї спроби");
+                Debug.Log($"Кораблі гравця розміщено успішно з {attempt + 1}-ї спроби");
                 return;
             }
         }
 
-        Debug.LogError("❌ Не вдалося розмістити всі кораблі гравця навіть після кількох спроб.");
+        Debug.LogError("Не вдалося розмістити всі кораблі гравця навіть після кількох спроб.");
     }
-
     int PlaceShip(int length, int count)
     {
         int placed = 0;

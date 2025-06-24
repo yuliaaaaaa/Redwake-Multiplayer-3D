@@ -20,11 +20,11 @@ public class GameOverManager : MonoBehaviour
 
         if (AreAllShipsSunk(enemyGrid.Grid))
         {
-            ShowGameOver("🎉 Ти переміг!");
+            ShowGameOver("Ти переміг!");
         }
         else if (AreAllShipsSunk(playerGrid.Grid))
         {
-            ShowGameOver("💀 Поразка");
+            ShowGameOver("Поразка");
         }
     }
 
@@ -62,7 +62,7 @@ public class GameOverManager : MonoBehaviour
         if (gameOverPanel != null)
             gameOverPanel.SetActive(true);
 
-        Debug.Log($"🏁 Гра завершена: {message}");
+        Debug.Log($"Гра завершена: {message}");
     }
 
     public void RestartGame()

@@ -9,7 +9,7 @@ public class EnemyTileClickHandler : MonoBehaviour
     {
         if (synchronizer == null)
         {
-            Debug.LogError("❌ [ClickHandler] ShotSynchronizer не передано!");
+            Debug.LogError("[ClickHandler] ShotSynchronizer не передано!");
             return;
         }
 
@@ -21,7 +21,7 @@ public class EnemyTileClickHandler : MonoBehaviour
         tile = GetComponent<Tile>();
         if (tile == null)
         {
-            Debug.LogError("❌ [ClickHandler] Не знайдено Tile на обʼєкті!");
+            Debug.LogError("[ClickHandler] Не знайдено Tile на обʼєкті!");
         }
     }
 
@@ -31,19 +31,19 @@ public class EnemyTileClickHandler : MonoBehaviour
 
         if (!tile.IsEnemyField)
         {
-            Debug.Log($"⛔ Клік по своєму полі: {tile.GridPosition}");
+            Debug.Log($"Клік по своєму полі: {tile.GridPosition}");
             return;
         }
 
         if (!GameManager.Instance.IsPlayerTurn())
         {
-            Debug.Log("⏳ Зачекай свого ходу!");
+            Debug.Log("Зачекай свого ходу!");
             return;
         }
 
         if (tile.IsHit)
         {
-            Debug.Log("🔁 Вже стріляли по цій клітинці");
+            Debug.Log("Вже стріляли по цій клітинці");
             return;
         }
         shotSynchronizer.SendFireAt(tile.GridPosition);

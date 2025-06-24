@@ -15,7 +15,7 @@ public class EnemyGridGenerator : MonoBehaviour
     {
         if (synchronizer == null)
         {
-            Debug.LogError("❌ Не передано ShotSynchronizer у GenerateGrid!");
+            Debug.LogError("Не передано ShotSynchronizer у GenerateGrid!");
         }
 
         for (int x = 0; x < gridSize; x++)
@@ -38,7 +38,7 @@ public class EnemyGridGenerator : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogWarning($"📛 На Tile ({x},{y}) немає EnemyTileClickHandler");
+                    Debug.LogWarning($"На Tile ({x},{y}) немає EnemyTileClickHandler");
                 }
             }
         }

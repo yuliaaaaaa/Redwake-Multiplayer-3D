@@ -8,7 +8,7 @@ public class CameraMouseLook : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(2)) // колесо мишки затиснуто
+        if (Input.GetMouseButtonDown(2)) 
         {
             isRotating = true;
             lastMousePosition = Input.mousePosition;
@@ -24,7 +24,6 @@ public class CameraMouseLook : MonoBehaviour
             float rotX = -delta.y * rotationSpeed * Time.deltaTime;
             float rotY = delta.x * rotationSpeed * Time.deltaTime;
 
-            // Обертаємо камеру навколо своєї позиції
             transform.eulerAngles += new Vector3(rotX, rotY, 0);
             lastMousePosition = Input.mousePosition;
         }
