@@ -20,7 +20,6 @@ public class ShotSynchronizer : MonoBehaviourPun
     [PunRPC]
     public void RPC_FireCannonAt(int x, int y, PhotonMessageInfo info)
     {
-        if (!photonView.IsMine) return;
 
         Vector2Int gridPos = new Vector2Int(x, y);
         Tile targetTile = GameManager.Instance.playerGrid.Grid[gridPos.x, gridPos.y];
